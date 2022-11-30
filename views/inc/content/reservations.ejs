@@ -3,9 +3,24 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-6 animate-box">
+<<<<<<< HEAD
         
                     <%- include('alerts') -%>
                     
+=======
+                    <% if (typeof error === "string") {%>
+                    <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+                    <% } %>
+
+                    <% if (typeof success === "string") {%>
+                        <div class="alert alert-success">
+                        <%= success %>
+                    </div>
+                    <% } %>
+
+>>>>>>> b8c82297cd67ee66eb0ffa8efcaccb8f723c0e27
                 <h3>Reserva de mesa</h3>
                 <form action="/reservations" method="post">
                     <div class="row form-group">
