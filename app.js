@@ -3,9 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-<<<<<<< HEAD
+
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
+var formidable = require('formidable');
 
 // redis@v4
 const { createClient } = require("redis")
@@ -17,19 +18,46 @@ redisClient.connect().catch(console.error)
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
-=======
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
->>>>>>> b8c82297cd67ee66eb0ffa8efcaccb8f723c0e27
 
 var app = express();
+
+
+
+app.use(function(req, res , next){
+
+if (req.method === 'POST'){
+
+  var form = formidable.IncomingForm({
+    uploadDir: path.join(__dirname, "/public/images"),
+    keepExtensions:true
+
+  });
+
+  form.parse(req, function(err, fields, files){
+
+    req.files = fields;
+    req.files = files;
+
+    next();
+  })
+
+} else {
+
+  next();
+}
+
+
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-<<<<<<< HEAD
+
 
 app.use(
   session({
@@ -43,8 +71,7 @@ app.use(
  
 
 
-=======
->>>>>>> b8c82297cd67ee66eb0ffa8efcaccb8f723c0e27
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -52,11 +79,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-<<<<<<< HEAD
+
 app.use('/admin', adminRouter);
-=======
+
 app.use('/users', usersRouter);
->>>>>>> b8c82297cd67ee66eb0ffa8efcaccb8f723c0e27
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
